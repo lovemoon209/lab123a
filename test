@@ -1,0 +1,52 @@
+#define main dont_use_main
+#include "lab123a.cpp"
+#undef main
+#include "gtest/gtest.h"
+#include <cstring>
+
+TEST(CompareStudentsTest, SortOrder) {
+  Student a = {1, "AAA", 1, CS, 80, 80, 70};
+  Student b = {2, "BBB", 2, IT, 90, 90, 90};
+
+  EXPECT_TRUE(compareStudents(a, b));
+  EXPECT_FALSE(compareStudents(b, a));
+}
+
+TEST(CompareIndexTest, SortOrder) {
+  Index a = {0, 1, 70, "AAA"};
+  Index b = {1, 2, 90, "BBB"};
+
+  EXPECT_TRUE(compareIndex(a, b));
+  EXPECT_FALSE(compareIndex(b, a));
+}
+
+TEST(BinarySearchTest, Found) {
+  Index arr[3] = {{0, 1, 70, "AAA"}, {1, 2, 80, "BBB"}, {2, 3, 90, "CCC"}};
+
+  EXPECT_TRUE(binarySearch(arr, 3, "BBB", 2, 80));
+}
+
+TEST(BinarySearchTest, NotFound) {
+  Index arr[3] = {{0, 1, 70, "AAA"}, {1, 2, 80, "BBB"}, {2, 3, 90, "CCC"}};
+
+  EXPECT_FALSE(binarySearch(arr, 3, "DDD", 1, 50));
+}
+
+TEST(SortingTest, StudentSorting) {
+  Student arr[3] = {{1, "CCC", 3, CS, 80, 80, 90},
+                    {2, "AAA", 1, CS, 80, 80, 70},
+                    {3, "BBB", 2, CS, 80, 80, 80}};
+
+  for (int i = 0; i < 2; i++)
+    for (int j = 0; j < 2 - i; j++)
+      if (compareStudents(arr[j + 1], arr[j])) {
+        Student t = arr[j];
+        arr[j] = arr[j + 1];
+        arr[j + 1] = t;
+      }
+
+  EXPECT_STREQ(arr[0].surname, "AAA");
+  EXPECT_STREQ(arr[1].surname, "BBB");
+  EXPECT_STREQ(arr[2].surname, "CCC");
+}
+admin@MacBook-Air-admin-2 tems % 
